@@ -106,6 +106,41 @@ Instruction:
 You should understand:
 - `pyproject.toml` describes what the project needs
 
+## Lesson Exercise 3: Write a `pyproject.toml` for PyTorch and Anthropic
+
+Goal: complete exercise 3 from the lesson with a runnable example.
+
+Create a throwaway folder such as `scratch-exercise-3/` and add this file:
+
+```toml
+[project]
+name = "scratch-ai-project"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "torch>=2.3",
+    "anthropic>=0.39",
+]
+```
+
+Then create a virtual environment in that folder and install from the project file:
+
+```powershell
+uv venv
+.\.venv\Scripts\Activate.ps1
+uv pip install -e .
+```
+
+Verify both packages import correctly:
+
+```powershell
+python -c "import torch, anthropic; print(torch.__version__, anthropic.__version__)"
+```
+
+You should notice:
+- `pyproject.toml` can describe both ML and API dependencies in one project
+- installing from the project file keeps the environment definition in version-controlled config instead of ad hoc shell history
+
 ## Exercise 6: Understand Optional Dependencies
 
 Goal: understand extras.
@@ -199,6 +234,37 @@ Suggested rule:
 
 You should understand:
 - dependency tracking breaks down when multiple package managers modify the same environment carelessly
+
+## Lesson Exercise 4: Deliberately Install a Package Globally, Then Remove It
+
+Goal: complete exercise 4 from the lesson and see exactly what "global install" means.
+
+Open a fresh shell with no virtual environment active. Install a small package globally:
+
+```powershell
+python -m pip install colorama
+```
+
+Check which Python you are using and where the package was installed:
+
+```powershell
+python -c "import sys; print(sys.executable)"
+python -m pip show colorama
+```
+
+What to look for:
+- `sys.executable` should point to your system Python, not `.venv\Scripts\python.exe`
+- `pip show` prints the package location, which proves where the install landed
+
+After you confirm it, remove the package:
+
+```powershell
+python -m pip uninstall colorama
+```
+
+You should notice:
+- a global install changes the default Python on your machine, not just one project
+- using `python -m pip` makes it easier to see which interpreter owns the install
 
 ## Exercise 12: Understand CUDA Mismatch
 
